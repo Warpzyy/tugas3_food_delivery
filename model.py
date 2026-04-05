@@ -17,7 +17,11 @@ def train_model():
 
 import matplotlib.pyplot as plt
 
-def save_plot():
+def save_plot(jarak_input=None):
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from sklearn.linear_model import LinearRegression
+
     df = pd.read_csv("Food_Delivery_Times.csv")
 
     X = df[['Distance_km']]
@@ -27,11 +31,18 @@ def save_plot():
     model.fit(X, y)
 
     plt.figure()
-    plt.scatter(X, y)
-    plt.plot(X, model.predict(X))
+    plt.scatter(X, y, label="Data Asli")
+    plt.plot(X, model.predict(X), label="Regresi")
+
+    # 🔴 titik input user
+    if jarak_input is not None:
+        pred = model.predict([[jarak_input]])
+        plt.scatter(jarak_input, pred, color='red', s=100, label="Prediksi User")
+
     plt.xlabel("Jarak (km)")
     plt.ylabel("Waktu (menit)")
     plt.title("Regresi Linear Delivery Time")
+    plt.legend()
 
     plt.savefig("static/plot.png")
     plt.close()
