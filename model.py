@@ -30,13 +30,18 @@ def save_plot(jarak_input=None):
     model = LinearRegression()
     model.fit(X, y)
 
+    # SORT BIAR GARIS RAPI 🔥
+    X_sorted = X.sort_values(by='Distance_km')
+    y_pred_sorted = model.predict(X_sorted)
+
     plt.figure()
     plt.scatter(X, y, label="Data Asli")
-    plt.plot(X, model.predict(X), label="Regresi")
+    plt.plot(X_sorted, y_pred_sorted, color='green', label="Regresi")
 
-    # 🔴 titik input user
+    # 🔴 titik user
     if jarak_input is not None:
-        pred = model.predict([[jarak_input]])
+        input_df = pd.DataFrame([[jarak_input]], columns=['Distance_km'])
+        pred = model.predict(input_df)
         plt.scatter(jarak_input, pred, color='red', s=100, label="Prediksi User")
 
     plt.xlabel("Jarak (km)")
